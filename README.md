@@ -56,13 +56,14 @@ mysql:
 package model
 
 import (
-	"github.com/archine/mysql-starter"
+	"errors"
 	"github.com/archine/ioc"
+	starter "github.com/archine/mysql-starter"
+	"gorm.io/gorm"
 )
 
-
 type User struct {
-    Id int
+	Id       int
 	Username string
 }
 
@@ -71,11 +72,23 @@ func (u *User) TableName() string {
 }
 
 type UserMapper struct {
-	// 直接注入
 	*starter.M
 }
 
 func (u *UserMapper) CreateBean() ioc.Bean {
 	return &UserMapper{}
+}
+
+// FindOne 查询
+func (u *UserMapper) FindOne(id int) *User {
+	var data User
+	err := u.Db.Model(data).Where("id = ?", id).Take(&data).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil
+		}
+		panic(err)
+	}
+	return &data
 }
 ```
