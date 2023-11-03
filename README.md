@@ -14,7 +14,7 @@ go get github.com/archine/mysql-starter@v1.0.0
 
 ```shell
 # go.mod文件加入下面的一条
-github.com/archine/mysql-starter v1.0.6
+github.com/archine/mysql-starter v1.0.0
 # 命令行在该项目目录下执行
 go mod tidy
 ```
